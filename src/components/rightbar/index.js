@@ -31,7 +31,6 @@ export default class RightBar extends Component {
       strokeWidth: 4
     })
 
-    layer.add(circle);
     layer.add(rect);
     stage.add(layer);
 
@@ -50,6 +49,7 @@ export default class RightBar extends Component {
     });
 
     rect.on('dragstart', () => {
+      console.log("Drag almost started!")
       rect.stopDrag();
 
       const clone = rect.clone({
@@ -69,19 +69,7 @@ export default class RightBar extends Component {
     return (
       <div className="sidebar rightbar">
         <div className="sidebar-components">
-         {/* <div id="canvas-container" ref={ ref => this.createScene(ref)}></div>*/}
-          {
-            components.map((component, i) => {
-              return <a key={ i }href="javascript:void(0)" className="draggable-item">
-                      <article>
-                        <figure>
-                          <img className="component-icon" src={ component.src } />
-                          <figcaption>{ component.name }</figcaption>
-                        </figure>
-                      </article>
-                    </a>
-            })
-          }
+         <div id="canvas-container" ref={ ref => this.createScene(ref)}></div>
         </div>
       </div>
     ) 

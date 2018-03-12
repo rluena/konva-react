@@ -68,7 +68,6 @@ export const Trigger = function(type, layer) {
     points: [containerCircle.getX(), containerCircle.getY(), pointerCircle.getX(), pointerCircle.getY()],
     stroke: 'grey',
     strokeWidth: 3,
-    visible: true,
     visible: false,
   });
   
@@ -130,7 +129,7 @@ export const Trigger = function(type, layer) {
   btnConnect.on('mouseover', setConnectDraggable);
   btnConnect.on('mouseleave', resetGroupContainer);
   pointerCircle.on("dragmove", dragginPointer);
-  pointerCircle.on("dragend", pointerDroped)
+  pointerCircle.on("dragend", pointerDroped);
   
   return group;
 }
@@ -154,7 +153,6 @@ export const Condition = function(type, layer) {
     that.fill = "yellow"
   }
   
-  var group = new Konva.Group({ x: that.x, y: that.y, draggable: true });
    
   var conditionComponent = new Konva.RegularPolygon({
     sides: 8,
@@ -197,55 +195,79 @@ export const Condition = function(type, layer) {
     shadowOpacity: 0.2,
     visible: false,
   });
-  
-  var conEndX = 110;
-  var conEndY = 0;
+
+  // Pointer at the end of the arrow
+  var pointerCircle = new Konva.Circle({
+    x: 110,
+    y: 0,
+    radius: 15,
+    draggable: true
+  });
   
   var connectLine = new Konva.Arrow({
-    points: [0, 0, conEndX, conEndY],
+    points: [conditionComponent.getX(), conditionComponent.getY(), pointerCircle.getX(), pointerCircle.getY()],
     stroke: 'grey',
     strokeWidth: 3,
     visible: false
   });
   
+  var group = new Konva.Group({ x: that.x, y: that.y, draggable: true });
+  
   group.add(connectLine);
+  group.add(pointerCircle);
   group.add(conditionComponent);
   group.add(btnConnect);
   group.add(btnDelete);
-  
-  // Deleting component/group
-  btnDelete.on('click', function() {
-    group.destroy();
-    layer.draw();
-  });
-  
-  group.on("mouseenter", function() {
-    // Move component to the top
+
+  // Objects Methods;
+  function hoveringComponent() {
     this.moveToTop();
     btnDelete.visible(true);
     btnConnect.visible(true);
     layer.draw();
-  }).on("mouseleave", function() {
-    btnDelete.visible(false);
-    btnConnect.visible(false);
-    layer.draw();
-  });
+  }
   
-  // Deleting component/group
-  btnDelete.on('click', function() {
+  function deleteComponent() {
     group.destroy();
     layer.draw();
-  });
-    
-  btnConnect.on("mousedown", function() {
+  }
+  
+  function setConnectDraggable() {
+    pointerCircle.moveToTop();
     group.draggable(false);
-    connectLine.visible(true);
+    pointerCircle.position({x: btnConnect.getX(), y: btnConnect.getY()});
     layer.draw();
-  }).on("mouseup", function(){
+  }
+  
+  function resetGroupContainer() {
     group.draggable(true);
     connectLine.visible(false);
     layer.draw();
-  });
+  }
+  
+  // Dragging pointer around
+  function dragginPointer(e){
+    var p=[conditionComponent.getX(), conditionComponent.getY(), pointerCircle.getX(), pointerCircle.getY()];
+    connectLine.visible(true);
+    connectLine.setPoints(p);
+    layer.draw();
+  }
+  
+  // Dropping pointer
+  function pointerDroped(e) {
+    console.log("Dropped");
+    pointerCircle.position({x: 110, y:0});
+    var p=[conditionComponent.getX(), conditionComponent.getY(), pointerCircle.getX(), pointerCircle.getY()];
+    connectLine.setPoints(p).visible(false);
+    layer.draw();
+  }
+
+  group.on('mouseenter', hoveringComponent);
+  btnDelete.on('click', deleteComponent);
+  btnConnect.on('mouseover', setConnectDraggable);
+  btnConnect.on('mouseleave', resetGroupContainer);
+  pointerCircle.on("dragmove", dragginPointer);
+  pointerCircle.on("dragend", pointerDroped);
   
   
   return group;
