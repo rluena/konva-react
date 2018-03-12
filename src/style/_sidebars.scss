@@ -1,0 +1,109 @@
+.sidebar {
+  background: $primary-dark-color;
+  background: #222c30;
+  position: absolute;
+  height: 100vh;
+  top: 0px;
+}
+
+.sidebar.leftbar {
+  min-width: 40px;
+  color: $grey-light;
+  text-align: center;
+  margin: 0px;
+  position: absolute;
+  left: 0px;
+  padding: 0px;
+  padding-top: 3em;
+
+  .icon-container {
+    height: 2.4em;
+    padding-top: 7px;
+    cursor: pointer;
+  }
+  
+  .icon-container.active {
+    background-color: black;
+    color: white;
+  }
+}
+
+.sidebar.rightbar {
+  min-width: 264px;
+  position: absolute;
+  right: 0px;
+  padding: 1.5em 1em;
+  
+  .sidebar-components {
+    color: white;
+
+    .component-icon {
+      width: 45px;
+      margin-bottom: 3px;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      width: 50%;
+
+      &:active,
+      &:selected,
+      &:focus {
+        highlight: none;
+      }
+      
+      span {
+        font-size: 18px;
+        text-align: center;
+      }
+    }
+
+    
+    figure {
+      /*text-align: center;*/
+      /*width: 45%;*/
+
+      figcaption {
+        /*float: left;*/
+        text-align: center;
+        color: #92a8bd;
+        /*width: 50px;*/
+        /*padding-left: 13px;*/
+        font-size: 12px;
+        line-height: 15px;
+        margin-top: 3px;
+      }
+
+     /* &:before {
+        top: 3px;
+        left: 0;
+        position: absolute;
+        content: '';
+        border-bottom: 16px solid #808080;
+        border-bottom-color: rgb(128, 128, 128);
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        height: 0;
+        width: 22px;
+      }
+
+      &:after {
+       content: "";
+        width: 54px;
+        height: 52px;
+        position: absolute;
+        left: 11px;
+        top: 3px;
+        z-index: 1;
+        -webkit-border-radius: 5px 5px 5px 5px;
+        border-radius: 5px 5px 5px 5px;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+      }*/
+    }
+  }
+}

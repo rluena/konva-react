@@ -1,0 +1,16 @@
+.canvas-area {
+  // background-color: grey;
+  // min-width: 500px;
+
+  .canvas-renaming {
+    width: 350px;
+    position: absolute;
+    left: 45px;
+    bottom: 12px;
+
+    .form-control {
+      border-radius: 3px;
+      font-weight: bold;
+    }
+  }
+}

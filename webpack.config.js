@@ -6,7 +6,14 @@ module.exports = {
   module: {
     rules: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/},
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/}
+      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/},
+      { test: /\.(png|jpg|gif)$/, use: [
+        { loader: 'file-loader', options: {}}
+      ]},
+      {
+        test: /\.(css|sass|scss)$/,
+        loader: 'style-loader!css-loader!sass-loader',
+      }
     ]
   },
 

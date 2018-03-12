@@ -1,0 +1,25 @@
+.navbar {
+  padding-left: 45px;
+
+  .right-button-group {
+    margin-right: 264px;
+  }
+
+  .left-button-group {
+    button.btn-secondary {
+      margin-left: 5px;
+    }
+  }
+
+  button.btn-secondary {
+    background-color: white;
+    color: $grey-dark;
+    border: 1px solid $grey-light;
+    cursor: pointer;
+
+    &:active,
+    &:focus, {
+      border: 0px;
+    }
+  }
+}
