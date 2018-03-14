@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import CanvasContainer from './components/container';
+import RightBar from '../rightbar';
 
 export default class Canvas extends Component {
   constructor() {

@@ -11,7 +11,6 @@ export default class Home extends Component {
       <div className="main-container">
         <LeftBar />
         <Canvas />
-        <RighBar />
       </div>
     )
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Trigger, Condition } from './Lib';
 import Nav from '../../Nav';
+import RightBar from '../../rightbar';
 
 import Konva from 'konva';
 
@@ -28,11 +29,11 @@ export default class CanvasContainer extends Component {
   }
 
   createStage (container) {
-    const canvasWidth = window.innerWidth;
+    const canvasWidth = window.innerWidth - 260;
     const canvasHeight = window.innerHeight;
 
     const stage = new Konva.Stage({
-      container: 'container',
+      container: container,
       draggable: true,
       width: canvasWidth,
       height: canvasHeight
@@ -42,14 +43,11 @@ export default class CanvasContainer extends Component {
     const tempLayer = new Konva.Layer();
 
     _renderComponents(allComponents, layer);
-
     stage.add(layer);
     stage.add(tempLayer);
   }
 
   addComponent (type){
-    console.log("Adding component...");
-
     const obj = {
       type: type,
       props: {
@@ -57,15 +55,13 @@ export default class CanvasContainer extends Component {
         position: { x: 110, y: 0 }
       }
     }
-
-    // allComponents.push(obj);
-    // _renderComponents(allComponents);
   }
 
   render() {
     return (
       <div>
         <Nav addComponent = { type => this.addComponent(type) }/>
+        <RightBar />
         <div style={{ overflowY: "hidden", height: "92vh"}} id="container" ref={ ref => this.createStage(ref)}></div>
       </div>
     )
@@ -97,4 +93,22 @@ function _renderComponents(components, layer) {
         layer.add(new Condition('list', layer));
       }
     });
+}
+
+function _createTempStage(container) {
+  const canvasWidth = 360;
+  const canvasHeight = window.innerHeight;
+
+  const stage = new Konva.Stage({
+    container: container,
+    // draggable: true,
+    width: canvasWidth,
+    height: canvasHeight
+  });
+
+  const  layer = new Konva.Layer();
+
+  layer.add(new Trigger('list', layer));
+
+  const tempLayer = new Konva.Layer();
 }

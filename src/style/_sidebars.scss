@@ -47,6 +47,7 @@
       text-decoration: none;
       display: inline-block;
       text-align: center;
+      position: relative;
       width: 50%;
 
       &:active,
@@ -58,6 +59,16 @@
       span {
         font-size: 18px;
         text-align: center;
+      }
+
+      .draggable-icon {
+        height: 80px;
+        width: 80px;
+        position: absolute;
+        z-index: 1;
+        left: 9px;
+        top: 0;
+        background: "red";
       }
     }
 
