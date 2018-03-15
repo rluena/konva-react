@@ -101,7 +101,6 @@ function _createTempStage(container) {
 
   const stage = new Konva.Stage({
     container: container,
-    // draggable: true,
     width: canvasWidth,
     height: canvasHeight
   });

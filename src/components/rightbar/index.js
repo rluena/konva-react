@@ -34,8 +34,8 @@ export default class RightBar extends Component {
             components.map((component, i) => {
               return <a key={ i }href="javascript:void(0)" className="draggable-item">
                       <article>
-                        <figure onDragStart = { () => console.log("Has been dragged!")}>
-                          <img ref="draggable-img" onMouseDown = { (ref) => _draggimage(ref)} onDrag = {() => console.log("Dragging stated!") } className="component-icon" src={ component.src } />
+                        <figure>
+                          <img ref="draggable-img" onMouseDown = { (ref) => _draggimage(ref) } className="component-icon" src={ component.src } />
                           <figcaption>{ component.name }</figcaption>
                         </figure>
                       </article>
@@ -113,42 +113,48 @@ function _draggimage(el) {
   let posX = 36;
   let posY = 0;
 
-  _dragInit(el.target)
+  _dragInit(el.target);
 
   function _dragInit(element) {
-    selected = element.cloneNode(true);
+    // selected = element.cloneNode(true);
+    selected = element;
+    selected.zIndex = 1000;
     selected.style.width = 45 + 'px';
     selected.style.height = 45 + 'px';
+    selected.style.position = "absolute";
   }
 
   function _moveElement(e) {
     mouseX = document.all ? window.event.clientX : e.pageX;
     mouseY = document.all ? window.event.clientY : e.pageY;
 
-
     if(selected !== null) {
-      selected.style.position = "absolute";
       selected.style.left = (mouseX - posX) + 'px';
       selected.style.top = (mouseY - posY) + 'px';
-
       document.body.appendChild(selected);
     }
   }
 
   // TODO: Adding component when dropping offset is 637 else animate to the original position
   function _dropElement() {
+    if(selected !== null){
       selected.parentNode.removeChild(selected);
-      selected = null;
+    }
+    selected = null;
   }
 
   document.onmousemove = _moveElement;
   document.onmouseup = _dropElement;
-  selected.ondragstart = function() {
+  el.target.ondragstart = function() {
+    console.log("Drag started two!")
     return false;
   }
 
+  selected.ondragstart = function(){
+    console.log("Drag started one!")
+    return false;
+  }
 }
-
 
 function _addComponent() {
   console.log("Component will be added!");
