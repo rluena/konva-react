@@ -29,13 +29,21 @@
 }
 
 .sidebar.rightbar {
-  min-width: 264px;
+  min-width: 236px;
   position: absolute;
   right: 0px;
   padding: 1.5em 1em;
   
   .sidebar-components {
     color: white;
+
+    .component-section-heading {
+      color: #92a8bd;
+      font-size: 16px;
+      font-weight: bold;
+      padding-left: 2px;
+      margin-bottom: 16px;
+    }
 
     .component-icon {
       width: 45px;
@@ -49,6 +57,9 @@
       text-align: center;
       position: relative;
       width: 50%;
+      width: 60px;
+      margin-right: 15px;
+      vertical-align: top;
 
       &:active,
       &:selected,
@@ -64,7 +75,7 @@
       .draggable-icon {
         height: 80px;
         width: 80px;
-        position: absolute;
+        // position: absolute;
         z-index: 1;
         left: 9px;
         top: 0;

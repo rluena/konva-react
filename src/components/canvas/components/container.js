@@ -1,66 +1,42 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Trigger, Condition } from './Lib';
+import KonvaLib from '../../../helpers/Lib';
 import Nav from '../../Nav';
 import RightBar from '../../rightbar';
 
-import Konva from 'konva';
-
-var cacheLayer;
+const componentsFromServer = [{
+  type: 'trigger',
+  category: 'list',
+  position: { x: 110, y: 0 }
+}, {
+  type: 'condition',
+  category: 'list',
+  position: { x: 55, y: 45 }
+}, {
+  type: 'trigger',
+  category: 'email',
+  position: { x: 29, y: 79 }
+}];
 
 export default class CanvasContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      components: [{
-        type: 'trigger',
-        props: {
-          type: 'list',
-          position: { x: 110, y: 0 }
-        }
-      }, {
-        type: 'condition',
-        props: {
-          type: 'list',
-          position: { x: 110, y: 0 }
-        }
-      }],
-    }
-  }
-
   createStage (container) {
-    const canvasWidth = window.innerWidth - 260;
+    const canvasWidth = window.innerWidth - 305;
     const canvasHeight = window.innerHeight;
-
-    const stage = new Konva.Stage({
-      container: container,
-      draggable: true,
+    const props = {
+      container,
       width: canvasWidth,
       height: canvasHeight
-    });
-
-    const  layer = new Konva.Layer();
-    const tempLayer = new Konva.Layer();
-
-    _renderComponents(allComponents, layer);
-    stage.add(layer);
-    stage.add(tempLayer);
-  }
-
-  addComponent (type){
-    const obj = {
-      type: type,
-      props: {
-        type: 'list',
-        position: { x: 110, y: 0 }
-      }
     }
+
+    const stage = KonvaLib.createStage(props);
+    _renderComponents(componentsFromServer);
+    KonvaLib.render();
   }
 
   render() {
     return (
       <div>
-        <Nav addComponent = { type => this.addComponent(type) }/>
+        <Nav/>
         <RightBar />
         <div style={{ overflowY: "hidden", height: "92vh"}} id="container" ref={ ref => this.createStage(ref)}></div>
       </div>
@@ -68,46 +44,8 @@ export default class CanvasContainer extends Component {
   }
 }
 
-
-const allComponents = [{
-  type: 'trigger',
-  props: {
-    type: 'list',
-    position: { x: 110, y: 0 }
-  }
-}, {
-  type: 'condition',
-  props: {
-    type: 'list',
-    position: { x: 110, y: 0 }
-  }
-}];
-
-function _renderComponents(components, layer) {
+function _renderComponents(components) {
   _.each(components, (component, i) => {
-      if(component.type === 'trigger') {
-        layer.add(new Trigger('list', layer));
-      }
-
-      if(component.type === 'condition') {
-        layer.add(new Condition('list', layer));
-      }
+      KonvaLib.addComponent(component.type, component.category, component.position);
     });
-}
-
-function _createTempStage(container) {
-  const canvasWidth = 360;
-  const canvasHeight = window.innerHeight;
-
-  const stage = new Konva.Stage({
-    container: container,
-    width: canvasWidth,
-    height: canvasHeight
-  });
-
-  const  layer = new Konva.Layer();
-
-  layer.add(new Trigger('list', layer));
-
-  const tempLayer = new Konva.Layer();
 }

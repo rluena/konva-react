@@ -1,45 +1,42 @@
 import React, { Component } from 'react';
-import { Stage, Layer, Rect, Text } from 'react-konva';
-import Konva from 'konva';
+import KonvaLib from '../../helpers/Lib';
+import componentsIcons from './components-icons';
 
 export default class RightBar extends Component {
-  createScene(container) {
-    const tempStage = new Konva.Stage({
-      container,
-      width: window.innerWidth,
-      height: window.innerHeight
+  renderIcons(icons) {
+    return icons.map((icon) => {
+      return <a key={ icon.id }href="javascript:void(0)" className="draggable-item">
+          <article>
+            <figure>
+              <img type = { icon.type }
+                    ref="draggable-img"
+                    categ = { icon.categ } 
+                    onMouseDown = { (ref) => _draggimage(ref) } 
+                    className="component-icon" 
+                    src={ icon.src } />
+
+              <figcaption>{ icon.name }</figcaption>
+            </figure>
+          </article>
+        </a>
     });
-    
-    const stage = new Konva.Stage({
-      container,
-      height: window.innerHeight,
-      width: 220,
-      draggable: false
-    });
-
-    const  layer = new Konva.Layer();
-    const tempLayer = new Konva.Layer();
-
-    _renderComponents(components, layer, tempLayer);
-
-    stage.add(layer);
-    stage.add(tempLayer);
   }
-
+  
   render() {
     return (
       <div className="sidebar rightbar">
         <div className="sidebar-components">
           {
-            components.map((component, i) => {
-              return <a key={ i }href="javascript:void(0)" className="draggable-item">
-                      <article>
-                        <figure>
-                          <img ref="draggable-img" onMouseDown = { (ref) => _draggimage(ref) } className="component-icon" src={ component.src } />
-                          <figcaption>{ component.name }</figcaption>
-                        </figure>
-                      </article>
-                    </a>
+            componentsIcons.map((component, i) => {
+              
+              return (
+                <div key = { i }>
+                  <h4 className="component-section-heading"> { component.title }</h4>
+                  <div>
+                    { this.renderIcons(component.icons) }
+                  </div>
+                </div>
+              )
             })
           }
         </div>
@@ -50,10 +47,14 @@ export default class RightBar extends Component {
 
 
 const components = [
-  { id: "12", type: "condition", name: "First Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png", pos: {x: 15, y:20 }}, 
-  { id: "13", type: "trigger", name: "Second Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png", pos: {x: 15, y:20 }},
-  { id: "14", type: "condition", name: "Third Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png", pos: {x: 15, y:20 }},
-  { id: "15", type: "trigger", name: "fourth Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png", pos: {x: 15, y:20 }}
+  { id: "12", type: "condition", categ: "email", name: "Condition Email", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }, 
+  { id: "13", type: "trigger", categ: "email", name: "Trigger Email", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
+  { id: "14", type: "condition", categ: "list", name: "Condition List", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
+  { id: "15", type: "trigger", categ: "list", name: "Trigger List", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
+  { id: "12", type: "condition", categ: "email", name: "First Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }, 
+  { id: "13", type: "trigger", categ: "email", name: "Second Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
+  { id: "14", type: "condition", categ: "email", name: "Third Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
+  { id: "15", type: "trigger", categ: "email", name: "fourth Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }
 ]
 
 function _renderComponents(components, layer, tempLayer) {
@@ -103,8 +104,6 @@ function _renderComponents(components, layer, tempLayer) {
   });
 }
 
-
-
 // Dragging image around
 function _draggimage(el) {
   let selected = null;
@@ -125,6 +124,7 @@ function _draggimage(el) {
   }
 
   function _moveElement(e) {
+    // This calculations should be moved to the dragInit function
     mouseX = document.all ? window.event.clientX : e.pageX;
     mouseY = document.all ? window.event.clientY : e.pageY;
 
@@ -138,24 +138,32 @@ function _draggimage(el) {
   // TODO: Adding component when dropping offset is 637 else animate to the original position
   function _dropElement() {
     if(selected !== null){
+      console.log("Drop element!");
+
+      const props = {
+        type: selected.getAttribute('type'),
+        category: selected.getAttribute('categ'),
+        pos: {
+          x: mouseX - posX,
+          y: mouseY - posY
+        },
+      }
+      _addComponent(props);
+
       selected.parentNode.removeChild(selected);
+      selected = null;
     }
-    selected = null;
   }
 
   document.onmousemove = _moveElement;
   document.onmouseup = _dropElement;
-  el.target.ondragstart = function() {
-    console.log("Drag started two!")
-    return false;
-  }
-
   selected.ondragstart = function(){
-    console.log("Drag started one!")
+    console.log("Drag started one!");
     return false;
   }
 }
 
-function _addComponent() {
-  console.log("Component will be added!");
+function _addComponent(props) {
+  const { pos } = props;
+  KonvaLib.addComponent(props.type, props.category, { x: pos.x, y: pos.y });
 }

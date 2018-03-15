@@ -15,7 +15,7 @@ export default class NavBar extends Component {
           <div className="navbar-button-group">
             <div className="btn-group" role="group" aria-label="Basic example">
               <button type="button" className="btn btn-sm btn-primary">Canvas</button>
-              <button type="button" className="btn btn-sm btn-secondary" onClick={ () => this.props.addComponent("Some Trigger") }>Live View</button>
+              <button type="button" className="btn btn-sm btn-secondary">Live View</button>
               <button type="button" className="btn btn-sm btn-secondary">Insights</button>
             </div>
           </div>
