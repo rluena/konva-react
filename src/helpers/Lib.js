@@ -9,6 +9,7 @@ export default (function(){
   let stage;
   let tempLayer;
   let layer;
+  let pointerPosition;
 
   /**
    * Initializing the stage and attaching to the view
@@ -41,13 +42,13 @@ export default (function(){
    * 
    * @return void;
    */
-  function addComponent(type, category, pos) {
-    if(type === 'trigger') {
-      layer.add(new Trigger(category, pos, layer, tempLayer));
+  function addComponent(props) {
+    if(props.type === 'trigger') {
+      layer.add(new Trigger(props.category, props.pos, layer, tempLayer));
     }
     
-    if(type === 'condition') {
-      layer.add(new Condition(category, pos, layer, tempLayer));
+    if(props.type === 'condition') {
+      layer.add(new Condition(props.category, props.pos, layer, tempLayer));
     }
 
     layer.draw();
@@ -55,14 +56,31 @@ export default (function(){
 
   /**
    * Render layer to a stage
+   * 
    * @return void;
    */
   function render() {
-    stage.add(layer, tempLayer);
+    stage.add(layer);
   }
 
+  function setPointerPosition() {
+    pointerPosition = stage.getPointerPosition() || { x: 0, y: 0 };
+  }
+
+  function getPointerPosition() {
+    return pointerPosition;
+  }
+  
+  function getStagePosition() {
+    return { x: stage.x(), y: stage.y()}
+  }
+
+  
   return {
     createStage,
+    setPointerPosition,
+    getPointerPosition,
+    getStagePosition,
     addComponent,
     render
   }

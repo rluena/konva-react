@@ -7,15 +7,19 @@ import RightBar from '../../rightbar';
 const componentsFromServer = [{
   type: 'trigger',
   category: 'list',
-  position: { x: 110, y: 0 }
+  position: { x: 0, y: 0 }
 }, {
   type: 'condition',
   category: 'list',
-  position: { x: 55, y: 45 }
+  position: { x: 300, y: 100 }
 }, {
   type: 'trigger',
   category: 'email',
-  position: { x: 29, y: 79 }
+  position: { x: 200, y: 0 }
+}, {
+  type: 'trigger',
+  category: 'list',
+  position: { x: 300, y: 0 }
 }];
 
 export default class CanvasContainer extends Component {
@@ -46,6 +50,11 @@ export default class CanvasContainer extends Component {
 
 function _renderComponents(components) {
   _.each(components, (component, i) => {
-      KonvaLib.addComponent(component.type, component.category, component.position);
+    const props = {
+      type: component.type,
+      category: component.category,
+      pos: component.position,
+    }
+      KonvaLib.addComponent(props);
     });
 }

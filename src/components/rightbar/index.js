@@ -11,7 +11,7 @@ export default class RightBar extends Component {
               <img type = { icon.type }
                     ref="draggable-img"
                     categ = { icon.categ } 
-                    onMouseDown = { (ref) => _draggimage(ref) } 
+                    onMouseDown = { (ref) => _draggimage(ref) }
                     className="component-icon" 
                     src={ icon.src } />
 
@@ -45,125 +45,68 @@ export default class RightBar extends Component {
   }
 }
 
-
-const components = [
-  { id: "12", type: "condition", categ: "email", name: "Condition Email", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }, 
-  { id: "13", type: "trigger", categ: "email", name: "Trigger Email", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
-  { id: "14", type: "condition", categ: "list", name: "Condition List", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
-  { id: "15", type: "trigger", categ: "list", name: "Trigger List", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
-  { id: "12", type: "condition", categ: "email", name: "First Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }, 
-  { id: "13", type: "trigger", categ: "email", name: "Second Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
-  { id: "14", type: "condition", categ: "email", name: "Third Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" },
-  { id: "15", type: "trigger", categ: "email", name: "fourth Icon", icon: "fa fa-envelope fa-3x", src: "http://coinpot.co/img/coin/bitcoincash/icon.png" }
-]
-
-function _renderComponents(components, layer, tempLayer) {
-  _.each(components, (component, i) => {
-    const { pos } = component;
-
-    if(component.type === 'trigger'){
-      const rect = new Konva.Rect({
-        width: 60,
-        height: 60,
-        x: pos.x,
-        y: pos.y,
-        fill: 'red',
-        draggable: true
-      });
-
-      layer.add(rect);
-
-      rect.on('mouseenter', function() {
-        this.moveToTop();
-        layer.draw();
-      })
-    }
-
-    if(component.type === "condition") {
-      const circle = new Konva.Circle({
-        radius: 35,
-        x: pos.x,
-        y: pos.y,
-        fill: 'green',
-        draggable: true,
-      });
-
-      layer.add(circle);
-
-      circle.on("mouseenter", function() {
-        this.moveToTop();
-        layer.draw();
-      });
-
-      // circle.on("dragstart", function() {
-      //   this.moveTo(tempLayer);
-      //   layer.draw();
-      // });
-    }
-
-  });
-}
-
-// Dragging image around
 function _draggimage(el) {
+  console.log("Starting dragging...");
   let selected = null;
+  let right = 0;
+  let top = 0;
   let mouseX = 0;
-  let mouseY = 0;
-  let posX = 36;
+  let posX = 0;
   let posY = 0;
+  let mouseY = 0;
+  let pointerPosition = {};
 
-  _dragInit(el.target);
+  selected = el.target.cloneNode(true);
+  const parent = el.target.parentNode;
 
-  function _dragInit(element) {
-    // selected = element.cloneNode(true);
-    selected = element;
-    selected.zIndex = 1000;
-    selected.style.width = 45 + 'px';
-    selected.style.height = 45 + 'px';
-    selected.style.position = "absolute";
+  selected.style.position = "absolute";
+  selected.style.width = 42 + 'px';
+  selected.style.height = 42 + 'px';
+  selected.style.left = -50 + 'px';
+  selected.style.top = -50 + 'px';
+  selected.style.zIndex = 1000;
+
+  _startDrag();
+  
+  function _startDrag(el) {
+    if(selected !== null) {
+      document.body.appendChild(selected);
+      document.ondragstart = function (e) {  return false };
+    }
   }
-
-  function _moveElement(e) {
-    // This calculations should be moved to the dragInit function
+                        
+  function _dragElement(e) {
     mouseX = document.all ? window.event.clientX : e.pageX;
     mouseY = document.all ? window.event.clientY : e.pageY;
-
+    
     if(selected !== null) {
-      selected.style.left = (mouseX - posX) + 'px';
-      selected.style.top = (mouseY - posY) + 'px';
-      document.body.appendChild(selected);
+      KonvaLib.setPointerPosition();
+      selected.style.left = (mouseX - 18) + "px";
+      selected.style.top = (mouseY -18) + "px";
     }
   }
 
-  // TODO: Adding component when dropping offset is 637 else animate to the original position
-  function _dropElement() {
-    if(selected !== null){
-      console.log("Drop element!");
-
+  function _dropElement(e) {
+    if(selected !== null) {
+      const stagePos = KonvaLib.getStagePosition();
+      selected.parentNode.removeChild(selected);
+      posX = (mouseX - stagePos.x - 42 );
+      posY = (mouseY - stagePos.y - 42 );
+      
       const props = {
         type: selected.getAttribute('type'),
         category: selected.getAttribute('categ'),
         pos: {
-          x: mouseX - posX,
-          y: mouseY - posY
+          x: posX,
+          y: posY
         },
       }
-      _addComponent(props);
 
-      selected.parentNode.removeChild(selected);
       selected = null;
+      KonvaLib.addComponent(props);
     }
   }
 
-  document.onmousemove = _moveElement;
+  document.onmousemove = _dragElement;
   document.onmouseup = _dropElement;
-  selected.ondragstart = function(){
-    console.log("Drag started one!");
-    return false;
-  }
-}
-
-function _addComponent(props) {
-  const { pos } = props;
-  KonvaLib.addComponent(props.type, props.category, { x: pos.x, y: pos.y });
 }

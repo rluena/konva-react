@@ -55,18 +55,11 @@
       text-decoration: none;
       display: inline-block;
       text-align: center;
-      position: relative;
       width: 50%;
       width: 60px;
       margin-right: 15px;
       vertical-align: top;
 
-      &:active,
-      &:selected,
-      &:focus {
-        highlight: none;
-      }
-      
       span {
         font-size: 18px;
         text-align: center;
@@ -85,47 +78,13 @@
 
     
     figure {
-      /*text-align: center;*/
-      /*width: 45%;*/
-
       figcaption {
-        /*float: left;*/
         text-align: center;
         color: #92a8bd;
-        /*width: 50px;*/
-        /*padding-left: 13px;*/
         font-size: 12px;
         line-height: 15px;
         margin-top: 3px;
       }
-
-     /* &:before {
-        top: 3px;
-        left: 0;
-        position: absolute;
-        content: '';
-        border-bottom: 16px solid #808080;
-        border-bottom-color: rgb(128, 128, 128);
-        border-left: 16px solid transparent;
-        border-right: 16px solid transparent;
-        height: 0;
-        width: 22px;
-      }
-
-      &:after {
-       content: "";
-        width: 54px;
-        height: 52px;
-        position: absolute;
-        left: 11px;
-        top: 3px;
-        z-index: 1;
-        -webkit-border-radius: 5px 5px 5px 5px;
-        border-radius: 5px 5px 5px 5px;
-        -moz-background-clip: padding;
-        -webkit-background-clip: padding-box;
-        background-clip: padding-box;
-      }*/
     }
   }
 }
