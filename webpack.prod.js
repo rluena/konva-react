@@ -29,8 +29,8 @@ const loaders = [
 module.exports = {
   entry: path.resolve('./src/index.js'),
   output: {
-    path: path.resolve('./build/js/'),
-    filename: 'auth-app.js',
+    path: path.resolve('./public'),
+    filename: 'bundle.js',
     publicPath: '/'
   },
   module: {
