@@ -1,2 +1,2 @@
 # konva-react
-Learning KonvaJS while intergrating with ReactJS
+Using KonvaJS and React to build graphical interactive maping system.
