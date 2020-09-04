@@ -35,7 +35,7 @@
     "browser-sync-webpack-plugin": "^2.2.2",
     "css-loader": "^0.28.10",
     "file-loader": "^1.1.10",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.17.1",
     "redux-logger": "^3.0.6",
     "sass-loader": "^6.0.6",
